@@ -1,14 +1,11 @@
-#include <GLFW/glfw3.h>
-
-/*gcc main.c -IC:\glfw-3.4.bin.WIN64\include -LC:\glfw-3.4.bin.WIN64\lib-mingw-w64 -lglfw3 
--lgdi32 -lopengl32 -o app.exea */
+#include "glfw3.h"
 
 int main()
 {
     glfwInit();
 
     GLFWwindow* window =
-        glfwCreateWindow(800, 600, "Hello My Great GLFW", NULL, NULL);
+        glfwCreateWindow(800, 600, "Hello Great GLFW", NULL, NULL);
 
     if (!window) {
         glfwTerminate();
