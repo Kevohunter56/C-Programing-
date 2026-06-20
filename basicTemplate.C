@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include "glfw3.h"
 
-
 void framebuffer_size_callback(GLFWwindow* window,int width,  int height)
 {
     glViewport(0, 0, width, height);
 }
-
 
 int main()
 {
@@ -18,9 +16,6 @@ int main()
     GLFWwindow* window =
         glfwCreateWindow(mode->width, mode->height, "C PROGRAMMING WITH GLFW OPENGL", primaryMonitor, NULL);
     
-    
-
-
     if (!window) {
         glfwTerminate();
         return -1;
@@ -38,7 +33,7 @@ int main()
         glViewport(0, 0, WindowWidth, WindowHeight);
         
         // Set background color (Red, Green, Blue, Alpha)
-        glClearColor(0.0f, 0.1f, 0.05f, 1.0f);
+        glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
 
         // Clear the color buffer
         glClear(GL_COLOR_BUFFER_BIT);
