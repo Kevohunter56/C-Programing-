@@ -32,7 +32,12 @@ int main()
     int WindowWidth, WindowHeight;
 
     while (!glfwWindowShouldClose(window))
-    {
+    {   
+        //Close the window when the escape key is pressed
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        {
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
+        }
         // Get the current window size
         glfwGetFramebufferSize(window, &WindowWidth, &WindowHeight);
         glViewport(0, 0, WindowWidth, WindowHeight);
