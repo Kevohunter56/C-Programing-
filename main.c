@@ -69,12 +69,17 @@ int main()
     int WindowWidth, WindowHeight;
     glViewport(0, 0, WindowWidth, WindowHeight);
 
+
+
+
+
+
     // Define the vertices for a triangle
     float vertices[] =
     {
-        -0.5f, -0.5f,
-        0.5f, -0.5f,
-        0.0f,  0.5f
+        0.0f, 0.0f,
+        0.3f, -0.4f,
+        0.0f,  -0.4f
     };
     //send the vertex data to the GPU
     glBufferData(
@@ -107,7 +112,7 @@ int main()
     "out vec4 FragColor;\n"
     "void main()\n"
     "{\n"
-    "    FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
+    "    FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n"
     "}\n";
     //compile the vertex shader
     GLuint vertexShader =
