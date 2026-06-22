@@ -46,19 +46,6 @@ int main()
         printf("Failed to initialize GLAD\n");
         return -1;
     } 
-    // Generate and bind a Vertex Array Object (VAO) and Vertex Buffer Object (VBO)
-    GLuint VAO, VBO;
-
-    // Generate VAO and VBO
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    // Bind VAO first
-    glBindVertexArray(VAO);
-
-    // Then bind VBO
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
         
 
     // Set the framebuffer size callback function
@@ -74,30 +61,34 @@ int main()
 
 
 
+    
+
     // Define the vertices for a triangle
-    float vertices[] =
+    float Vertices1[] =
     {
         0.0f, 0.0f,
         0.3f, -0.4f,
         0.0f,  -0.4f
     };
+    // Generate and bind a Vertex Array Object (VAO) and Vertex Buffer Object (VBO)
+    GLuint VAO1, VBO1;
+    // Generate VAO and VBO
+    glGenVertexArrays(1, &VAO1);
+    glGenBuffers(1, &VBO1);
+    // Bind VAO first
+    glBindVertexArray(VAO1);
+    // Then bind VBO
+    glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+
     //send the vertex data to the GPU
     glBufferData(
         GL_ARRAY_BUFFER,
-        sizeof(vertices),
-        vertices,
+        sizeof(Vertices1),
+        Vertices1,
         GL_STATIC_DRAW
     );
-    // Define the layout of the vertex data
-    glVertexAttribPointer(
-        0,                  // attribute location
-        2,                  // x,y
-        GL_FLOAT,
-        GL_FALSE,
-        2 * sizeof(float),
-        (void*)0
-    );
-    glEnableVertexAttribArray(0);
+
+
     //vertex shader source code
     const char* vertexShaderSource =
     "#version 330 core\n"
@@ -151,6 +142,54 @@ int main()
     glDeleteShader(fragmentShader);
 
 
+    // Define the layout of the vertex data
+    glVertexAttribPointer(
+        0,                  // attribute location
+        2,                  // x,y
+        GL_FLOAT,
+        GL_FALSE,
+        2 * sizeof(float),
+        (void*)0
+    );
+    glEnableVertexAttribArray(0);
+
+    // Define the vertices for a triangle
+    float Vertices2[] =
+    {
+        0.0f, 0.0f,
+        -0.3f, 0.4f,
+        0.0f,  0.4f
+    };
+    // Generate and bind a Vertex Array Object (VAO) and Vertex Buffer Object (VBO)
+    GLuint VAO2, VBO2;
+    // Generate VAO and VBO
+    glGenVertexArrays(1, &VAO2);
+    glGenBuffers(1, &VBO2);
+    // Bind VAO first
+    glBindVertexArray(VAO2);
+    // Then bind VBO
+    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+
+    //send the vertex data to the GPU
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        sizeof(Vertices2),
+        Vertices2,
+        GL_STATIC_DRAW
+    );
+    // Define the layout of the vertex data
+    glVertexAttribPointer(
+        0,                  // attribute location
+        2,                  // x,y
+        GL_FLOAT,
+        GL_FALSE,
+        2 * sizeof(float),
+        (void*)0
+    );
+    glEnableVertexAttribArray(0);
+
+
+
 
     while (!glfwWindowShouldClose(window))
     {   
@@ -167,19 +206,13 @@ int main()
         // Clear the color buffer
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
-        //glClear(GL_COLOR_BUFFER_BIT);
-
+        
         glUseProgram(shaderProgram);
+        glBindVertexArray(VAO1);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        glBindVertexArray(VAO);
-
-        glDrawArrays(
-            GL_TRIANGLES,
-            0,
-            3
-        );
-
+        glBindVertexArray(VAO2);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
 
 
