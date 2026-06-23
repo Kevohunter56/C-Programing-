@@ -40,7 +40,6 @@ int main()
 
         // Display what was drawn
         glfwSwapBuffers(window);
-
         // Process events
         glfwPollEvents();
     }
