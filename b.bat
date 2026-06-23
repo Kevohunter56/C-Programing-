@@ -1,4 +1,4 @@
-gcc Testmain.c glad.c ^
+gcc main.c glad.c ^
 -I./include ^
 -I./glfw-3.4.bin.WIN64\include ^
 -L./glfw-3.4.bin.WIN64\lib-mingw-w64 ^

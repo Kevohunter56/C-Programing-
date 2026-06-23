@@ -53,10 +53,7 @@ int main()
     /* Set the key callback function
     glfwSetKeyCallback(window, key_callback); */
     // Initialize window width and height variables
-    int WindowWidth, WindowHeight;
-    glViewport(0, 0, WindowWidth, WindowHeight);
-
-
+  
 
 
 
@@ -101,9 +98,10 @@ int main()
     const char* fragmentShaderSource =
     "#version 330 core\n"
     "out vec4 FragColor;\n"
+    "uniform vec4 ourColor;\n"
     "void main()\n"
     "{\n"
-    "    FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n"
+    "    FragColor = ourColor;\n"
     "}\n";
     //compile the vertex shader
     GLuint vertexShader =
@@ -197,9 +195,7 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-        }
-        // Get the current window size
-        glfwGetFramebufferSize(window, &WindowWidth, &WindowHeight);
+        } 
 
         // Set background color (Red, Green, Blue, Alpha)
         glClearColor(0.0f, 0.1f, 0.05f, 1.0f);
@@ -208,9 +204,11 @@ int main()
 
         
         glUseProgram(shaderProgram);
+        glUniform4f(glGetUniformLocation(shaderProgram, "ourColor"), 1.0f, 0.0f, 0.0f, 1.0f);
         glBindVertexArray(VAO1);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
+        glUniform4f(glGetUniformLocation(shaderProgram, "ourColor"), 0.0f, 1.0f, 0.0f, 1.0f);
         glBindVertexArray(VAO2);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
