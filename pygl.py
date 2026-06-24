@@ -153,7 +153,7 @@ def WriteToFile(FileName = "Testmain.c"):
 
 def ShaderSetup(Use=True,vertexShaderSource="vertexShaderSource", fragmentShaderSource="fragmentShaderSource",vertexShader="vertexShader", 
                 fragmentShader="fragmentShader", shaderProgram="shaderProgram",OurColor="Color"):
-    Body.AddOutSideMainLoop(textwrap(f"""
+    Body.AddOutSideMainLoop(textwrap.indent(f"""
 //vertex shader source code
 const char* {vertexShaderSource} =
 "#version 330 core{nL}"
@@ -208,13 +208,13 @@ glDeleteShader({vertexShader});
 glDeleteShader({fragmentShader});
 """,tab.tab))
     if Use:
-        Body.AddInsideMainLoop(textwrap(f"""
+        Body.AddInsideMainLoop(textwrap.indent(f"""
     glUseProgram({shaderProgram});                                
     """,tab.tab))
 
 def TriangleSetup(Use=True,color=[1.0,0.0,1.0,1.0],verticesName="vertices", points=[0.0, 0.0, 0.3, -0.4, 0.0, -0.4], VAOName="VAO", VBOName="VBO",
                   shaderProgram="shaderProgram",OurColor="Color"):
-    Body.AddOutSideMainLoop(textwrap(f"""
+    Body.AddOutSideMainLoop(textwrap.indent(f"""
 // Define the vertices for a triangle
 float {verticesName}[] =
 {oB}
@@ -252,7 +252,7 @@ glEnableVertexAttribArray(0);
 
 """,tab.tab))
     if Use:
-        Body.AddInsideMainLoop(textwrap(f"""
+        Body.AddInsideMainLoop(textwrap.indent(f"""
             glUniform4f(glGetUniformLocation({shaderProgram}, "{OurColor}"), {color[0]}f, {color[1]}f, {color[2]}f, {color[3]}f);
             glBindVertexArray({VAOName});
             glDrawArrays(GL_TRIANGLES, 0, 3);                         
