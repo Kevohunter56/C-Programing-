@@ -256,7 +256,8 @@ glEnableVertexAttribArray(0);
     // Initialize window width and height variables
     int WindowWidth, WindowHeight;
     glViewport(0, 0, WindowWidth, WindowHeight);
-
+    float colors[4][4] = {{0.2f, 0.7f, 0.7f, 1.0f},{1.0f, 0.4f, 0.3f, 1.0f},{1.0f, 0.8f, 0.2f, 1.0f},{0.6f, 0.2f, 0.8f, 1.0f}};
+    int w=0,x = 0,y=0,z=0;
     while (!glfwWindowShouldClose(window))
     {
         //Close the window when the escape key is pressed
@@ -276,46 +277,54 @@ glEnableVertexAttribArray(0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         
-    glUseProgram(shaderProgram);                                
+        glUseProgram(shaderProgram);                                
 
-            float colors[4][4] = {{0.2f, 0.7f, 0.7f, 1.0f},{1.0f, 0.4f, 0.3f, 1.0f},{1.0f, 0.8f, 0.2f, 1.0f},{0.6f, 0.2f, 0.8f, 1.0f}};
-            int w=0,x = 0,y=0,z=0;
+            
             float *color1 = colors[w];
             float *color2 = colors[x];
             float *color3 = colors[x];
             float *color4 = colors[x];
 
-            if (w==3){
-                w=0;
-            }
-            if (x==3){
-                x=0;
-            }
-            if (y==3){
-                y=0;
-            }
-            if (z==3){
-                z=0;
-
-
-            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 0.2f, 0.7f, 0.7f, 1.0f);
+            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), color1[0],color1[1],color1[2],color1[3]);
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLES, 0, 3);                         
 
 
-            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 1.0f, 0.4f, 0.3f, 1.0f);
+            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), color2[0],color2[1],color2[2],color2[3]);
             glBindVertexArray(VAO2);
             glDrawArrays(GL_TRIANGLES, 0, 3);                         
 
 
-            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 1.0f, 0.8f, 0.2f, 1.0f);
+            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), color3[0],color3[1],color3[2],color3[3]);
             glBindVertexArray(VAO3);
             glDrawArrays(GL_TRIANGLES, 0, 3);                         
 
 
-            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 0.6f, 0.2f, 0.8f, 1.0f);
+            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), color4[0],color4[1],color4[2],color4[3]);
             glBindVertexArray(VAO4);
             glDrawArrays(GL_TRIANGLES, 0, 3);                         
+
+            
+            if (w==3){
+                w=0;
+            }else{
+                w+=1;
+            }
+            if (x==3){
+                x=0;
+            }else{
+                x+=1;
+            }
+            if (y==3){
+                y=0;
+            }else{
+                y+=1;
+            }
+            if (z==3){
+                z=0;
+            }else{
+                z+=1;
+            }
 
 
 
