@@ -279,11 +279,23 @@ glEnableVertexAttribArray(0);
     glUseProgram(shaderProgram);                                
 
             float colors[4][4] = {{0.2f, 0.7f, 0.7f, 1.0f},{1.0f, 0.4f, 0.3f, 1.0f},{1.0f, 0.8f, 0.2f, 1.0f},{0.6f, 0.2f, 0.8f, 1.0f}};
-            int x = 0;
-            float *color1 = colors[x+0];
-            float *color2 = colors[x+1];
-            float *color3 = colors[x+2];
-            float *color4 = colors[x+3];
+            int w=0,x = 0,y=0,z=0;
+            float *color1 = colors[w];
+            float *color2 = colors[x];
+            float *color3 = colors[x];
+            float *color4 = colors[x];
+
+            if (w==3){
+                w=0;
+            }
+            if (x==3){
+                x=0;
+            }
+            if (y==3){
+                y=0;
+            }
+            if (z==3){
+                z=0;
 
 
             glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 0.2f, 0.7f, 0.7f, 1.0f);
