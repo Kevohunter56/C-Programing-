@@ -1,13 +1,16 @@
-import textwrap
 oB="{"
 cB="}"
 nL="\\n"
 tB="\\t"
+
+def Indent(text, prefix):
+    return "\n".join(prefix + line for line in text.splitlines())
+
 class SourceCode:
     def __init__(self):
         self.code = """"""
-    def add(self, code = """"""):
-        self.code += code
+    def add(self,tabs=0, code = """"""):
+        self.code += Indent(code,tab.put(tabs))
 Code  = SourceCode()
 
 class Tab:
@@ -18,7 +21,9 @@ class Tab:
     def add(self, space = 1):
         self.tabN += space
         self.tab = "    "* self.tabN
-
+    def put(self, space = 0):
+        self.tab = "    "* space
+        return self.tab
     def rem(self, space = 1):
         self.tabN -= space
         if self.tabN < 0:
@@ -31,37 +36,38 @@ class body:
         self.OutsideMainFunction = """"""
         self.OutsideMainLoop = """"""
         self.InsideMainLoop = """"""
-    def AddOutSideMainFunction(self, code = """"""):
-        self.OutsideMainFunction += code
+    def AddOutSideMainFunction(self,tabs=0,code = """"""):
 
-    def AddOutSideMainLoop(self, code = """"""):
-        self.OutsideMainLoop += code
+        self.OutsideMainFunction += Indent(code,tab.put(tabs))
 
-    def AddInsideMainLoop(self, code = """"""):
-        self.InsideMainLoop += code
+    def AddOutSideMainLoop(self,tabs=0,code = """"""):
+        self.OutsideMainLoop += Indent(code,tab.put(tabs))
+
+    def AddInsideMainLoop(self,tabs=0, code = """""" ):
+        self.InsideMainLoop += Indent(code,tab.put(tabs))
 Body = body()
 
 def ln():
     Code.add(f"{nL}")
 
-def Include(HeaderFiles=""""""):
-    Code.add(textwrap.indent(f"""//header files
+def Include(tabs0=0,HeaderFiles=""""""):
+    Code.add(tabs0,f"""//header files
 #include <stdio.h>
 #include "glad.h" 
 #include "glfw3.h" {HeaderFiles}
-""", tab.tab))
+""")
 
-def framebuffer_size_callback():
-    Code.add(textwrap.indent(f"""
+def framebuffer_size_callback(tabs0=0):
+    Code.add(tabs0,f"""
 //framebuffer size callback function
 void framebuffer_size_callback(GLFWwindow* window,int width,  int height)
 {oB}
     glViewport(0, 0, width, height);
 {cB}
-""", tab.tab))
+""")
 
-def key_callback():
-    Code.add(textwrap.indent(f"""
+def key_callback(tabs0=0):
+    Code.add(tabs0,f"""
 //key callback function
 void key_callback(GLFWwindow* window,
                   int key,
@@ -74,11 +80,13 @@ void key_callback(GLFWwindow* window,
             printf("Key %d pressed{nL}", key);
     {cB}
 {cB}
-""", tab.tab))
+""")
 
-def main(title = "C PROGRAMMING WITH GLFW OPENGL",color=[0.0, 0.8, 0.2, 1.0],windowed = "primaryMonitor", width = "mode->width", height = "mode->height"):
-    Code.add(textwrap.indent(f"""
+def main(tabs0=0,title = "C PROGRAMMING WITH GLFW OPENGL",color=[0.0, 0.8, 0.2, 1.0],windowed = "primaryMonitor", width = "mode->width", height = "mode->height"):
+    Code.add(tabs0,f"""
+             
 {Body.OutsideMainFunction}
+
 int main()
 {oB}
     // Initialize GLFW
@@ -133,7 +141,7 @@ int main()
 
         // Clear the color buffer
         glClear(GL_COLOR_BUFFER_BIT);
-
+        
         {Body.InsideMainLoop}
 
         // Display what was drawn
@@ -145,15 +153,16 @@ int main()
     glfwTerminate();
     return 0;
 {cB}
-""",tab.tab))
+""")
 
 def WriteToFile(FileName = "Testmain.c"):
     with open(FileName, "w") as file:
         file.write(Code.code)
 
-def ShaderSetup(Use=True,vertexShaderSource="vertexShaderSource", fragmentShaderSource="fragmentShaderSource",vertexShader="vertexShader", 
+def ShaderSetup(tabs1=0,tabs2=0,Use=True,vertexShaderSource="vertexShaderSource", fragmentShaderSource="fragmentShaderSource",vertexShader="vertexShader", 
                 fragmentShader="fragmentShader", shaderProgram="shaderProgram",OurColor="Color"):
-    Body.AddOutSideMainLoop(textwrap.indent(f"""
+    Body.AddOutSideMainLoop(tabs1,f"""
+                            
 //vertex shader source code
 const char* {vertexShaderSource} =
 "#version 330 core{nL}"
@@ -206,15 +215,15 @@ glLinkProgram({shaderProgram});
 //DELETE the shaders as they are no longer needed after linking
 glDeleteShader({vertexShader});
 glDeleteShader({fragmentShader});
-""",tab.tab))
+""")
     if Use:
-        Body.AddInsideMainLoop(textwrap.indent(f"""
-    glUseProgram({shaderProgram});                                
-    """,tab.tab))
+        Body.AddInsideMainLoop(tabs2,f"""
+glUseProgram({shaderProgram});                                
+    """)
 
-def TriangleSetup(Use=True,color=[1.0,0.0,1.0,1.0],verticesName="vertices", points=[0.0, 0.0, 0.3, -0.4, 0.0, -0.4], VAOName="VAO", VBOName="VBO",
+def TriangleSetup(tabs1=0,tabs2=0,Use=True,color=[1.0,0.0,1.0,1.0],verticesName="vertices", points=[0.0, 0.0, 0.3, -0.4, 0.0, -0.4], VAOName="VAO", VBOName="VBO",
                   shaderProgram="shaderProgram",OurColor="Color"):
-    Body.AddOutSideMainLoop(textwrap.indent(f"""
+    Body.AddOutSideMainLoop(tabs1,f"""                 
 // Define the vertices for a triangle
 float {verticesName}[] =
 {oB}
@@ -250,13 +259,13 @@ glVertexAttribPointer(
 );
 glEnableVertexAttribArray(0);
 
-""",tab.tab))
+""")
     if Use:
-        Body.AddInsideMainLoop(textwrap.indent(f"""
-            glUniform4f(glGetUniformLocation({shaderProgram}, "{OurColor}"), {color[0]}f, {color[1]}f, {color[2]}f, {color[3]}f);
-            glBindVertexArray({VAOName});
-            glDrawArrays(GL_TRIANGLES, 0, 3);                         
-
-""",tab.tab))
+        Body.AddInsideMainLoop(tabs2,f"""
+                               
+glUniform4f(glGetUniformLocation({shaderProgram}, "{OurColor}"), {color[0]}, {color[1]}, {color[2]}, {color[3]});
+glBindVertexArray({VAOName});
+glDrawArrays(GL_TRIANGLES, 0, 3);                         
+""")
     
    
