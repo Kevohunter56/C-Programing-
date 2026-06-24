@@ -33,7 +33,7 @@ int main()
     const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
 
     //window creation
-    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "C PROGRAMMING WITH GLFW OPENGL", primaryMonitor, NULL);
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "KEVIN THE PHILOSOPHER", primaryMonitor, NULL);
     if (!window) {
         glfwTerminate();
         return -1;
@@ -270,25 +270,38 @@ glEnableVertexAttribArray(0);
         glViewport(0, 0, WindowWidth, WindowHeight);
         
         // Set background color (Red, Green, Blue, Alpha)
-        glClearColor(0.0f, 0.8f, 0.2f, 1.0f);
+        glClearColor(0.03f, 0.04f, 0.1f, 0.1f);
 
         // Clear the color buffer
         glClear(GL_COLOR_BUFFER_BIT);
 
         
     glUseProgram(shaderProgram);                                
-    
-            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 1.0f, 0.0f, 1.0f, 1.0f);
+
+            float colors[4][4] = {{0.2f, 0.7f, 0.7f, 1.0f},{1.0f, 0.4f, 0.3f, 1.0f},{1.0f, 0.8f, 0.2f, 1.0f},{0.6f, 0.2f, 0.8f, 1.0f}};
+            int x = 0;
+            float *color1 = colors[x+0];
+            float *color2 = colors[x+1];
+            float *color3 = colors[x+2];
+            float *color4 = colors[x+3];
+
+
+            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 0.2f, 0.7f, 0.7f, 1.0f);
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLES, 0, 3);                         
 
 
-            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 0.7f, 0.2f, 0.0f, 1.0f);
+            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 1.0f, 0.4f, 0.3f, 1.0f);
             glBindVertexArray(VAO2);
             glDrawArrays(GL_TRIANGLES, 0, 3);                         
 
 
-            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 0.2f, 0.5f, 0.1f, 1.0f);
+            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 1.0f, 0.8f, 0.2f, 1.0f);
+            glBindVertexArray(VAO3);
+            glDrawArrays(GL_TRIANGLES, 0, 3);                         
+
+
+            glUniform4f(glGetUniformLocation(shaderProgram, "Color"), 0.6f, 0.2f, 0.8f, 1.0f);
             glBindVertexArray(VAO4);
             glDrawArrays(GL_TRIANGLES, 0, 3);                         
 
