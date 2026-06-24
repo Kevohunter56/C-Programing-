@@ -31,13 +31,13 @@ class body:
         self.OutsideMainFunction = """"""
         self.OutsideMainLoop = """"""
         self.InsideMainLoop = """"""
-    def addOutsideMainFunction(self, code = """"""):
+    def AddOutSideMainFunction(self, code = """"""):
         self.OutsideMainFunction += code
 
-    def addOutsideMainLoop(self, code = """"""):
+    def AddOutSideMainLoop(self, code = """"""):
         self.OutsideMainLoop += code
 
-    def addInsideMainLoop(self, code = """"""):
+    def AddInsideMainLoop(self, code = """"""):
         self.InsideMainLoop += code
 Body = body()
 
@@ -50,7 +50,6 @@ def Include(HeaderFiles=""""""):
 #include "glad.h" 
 #include "glfw3.h" {HeaderFiles}
 """, tab.tab))
-
 
 def framebuffer_size_callback():
     Code.add(textwrap.indent(f"""
@@ -76,7 +75,6 @@ void key_callback(GLFWwindow* window,
     {cB}
 {cB}
 """, tab.tab))
-
 
 def main(title = "C PROGRAMMING WITH GLFW OPENGL",color=[0.0, 0.8, 0.2, 1.0],windowed = "primaryMonitor", width = "mode->width", height = "mode->height"):
     Code.add(textwrap.indent(f"""
@@ -149,24 +147,14 @@ int main()
 {cB}
 """,tab.tab))
 
-
-
-
-
-
-
 def WriteToFile(FileName = "Testmain.c"):
     with open(FileName, "w") as file:
         file.write(Code.code)
 
-
-
-
-
-
-
-def ShaderSetup(vertexShaderSource="vertexShaderSource", fragmentShaderSource="fragmentShaderSource",vertexShader="vertexShader", fragmentShader="fragmentShader", shaderProgramName="shaderProgram"):
-    print(f"""//vertex shader source code
+def ShaderSetup(Use=True,vertexShaderSource="vertexShaderSource", fragmentShaderSource="fragmentShaderSource",vertexShader="vertexShader", 
+                fragmentShader="fragmentShader", shaderProgram="shaderProgram",OurColor="Color"):
+    Body.AddOutSideMainLoop(textwrap(f"""
+//vertex shader source code
 const char* {vertexShaderSource} =
 "#version 330 core{nL}"
 "layout (location = 0) in vec2 aPos;{nL}"
@@ -178,9 +166,10 @@ const char* {vertexShaderSource} =
 const char* {fragmentShaderSource} =
 "#version 330 core{nL}"
 "out vec4 FragColor;{nL}"
+"uniform vec4 {OurColor};{nL}"
 "void main(){nL}"
 "{oB}{nL}"
-"    FragColor = vec4(1.0, 1.0, 1.0, 1.0);{nL}"
+"    FragColor = {OurColor};{nL}"
 "{cB}{nL}";
 //compile the vertex shader
 GLuint {vertexShader} =
@@ -203,24 +192,30 @@ glShaderSource(
 );
 glCompileShader({fragmentShader});
 //create a shader program and link the shaders
-GLuint {shaderProgramName} =
+GLuint {shaderProgram} =
 glCreateProgram();
 glAttachShader(
-    {shaderProgramName},
+    {shaderProgram},
     {vertexShader}
 );
 glAttachShader(
-    {shaderProgramName},
+    {shaderProgram},
     {fragmentShader}
 );
-glLinkProgram({shaderProgramName});
+glLinkProgram({shaderProgram});
 //DELETE the shaders as they are no longer needed after linking
 glDeleteShader({vertexShader});
 glDeleteShader({fragmentShader});
-""")
+""",tab.tab))
+    if Use:
+        Body.AddInsideMainLoop(textwrap(f"""
+    glUseProgram({shaderProgram});                                
+    """,tab.tab))
 
-def TriangleSetup(verticesName="vertices", points=[0.0, 0.0, 0.3, -0.4, 0.0, -0.4], VAOName="VAO", VBOName="VBO"):
-    print(f"""// Define the vertices for a triangle
+def TriangleSetup(Use=True,color=[1.0,0.0,1.0,1.0],verticesName="vertices", points=[0.0, 0.0, 0.3, -0.4, 0.0, -0.4], VAOName="VAO", VBOName="VBO",
+                  shaderProgram="shaderProgram",OurColor="Color"):
+    Body.AddOutSideMainLoop(textwrap(f"""
+// Define the vertices for a triangle
 float {verticesName}[] =
 {oB}
     {str(points[0])}f, {str(points[1])}f,
@@ -255,13 +250,13 @@ glVertexAttribPointer(
 );
 glEnableVertexAttribArray(0);
 
-""")
+""",tab.tab))
+    if Use:
+        Body.AddInsideMainLoop(textwrap(f"""
+            glUniform4f(glGetUniformLocation({shaderProgram}, "{OurColor}"), {color[0]}f, {color[1]}f, {color[2]}f, {color[3]}f);
+            glBindVertexArray({VAOName});
+            glDrawArrays(GL_TRIANGLES, 0, 3);                         
 
-def ChooseShaderProgram(shaderProgramName="shaderProgram"):
-    print(f"glUseProgram({shaderProgramName});")
-
-def DrawTriangle(VAOName="VAO"):
-    print(f"""glBindVertexArray({VAOName});
-glDrawArrays(GL_TRIANGLES, 0, 3);
-""")
+""",tab.tab))
+    
    

@@ -53,8 +53,6 @@ int main()
     /* Set the key callback function
     glfwSetKeyCallback(window, key_callback); */
     // Initialize window width and height variables
-  
-
 
 
 
@@ -76,7 +74,6 @@ int main()
     glBindVertexArray(VAO1);
     // Then bind VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO1);
-
     //send the vertex data to the GPU
     glBufferData(
         GL_ARRAY_BUFFER,
@@ -84,6 +81,17 @@ int main()
         Vertices1,
         GL_STATIC_DRAW
     );
+    // Define the layout of the vertex data
+    glVertexAttribPointer(
+        0,                  // attribute location
+        2,                  // x,y
+        GL_FLOAT,
+        GL_FALSE,
+        2 * sizeof(float),
+        (void*)0
+    );
+    glEnableVertexAttribArray(0);
+
 
 
     //vertex shader source code
@@ -140,16 +148,6 @@ int main()
     glDeleteShader(fragmentShader);
 
 
-    // Define the layout of the vertex data
-    glVertexAttribPointer(
-        0,                  // attribute location
-        2,                  // x,y
-        GL_FLOAT,
-        GL_FALSE,
-        2 * sizeof(float),
-        (void*)0
-    );
-    glEnableVertexAttribArray(0);
 
     // Define the vertices for a triangle
     float Vertices2[] =

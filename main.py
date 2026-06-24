@@ -5,8 +5,8 @@ framebuffer_size_callback()
 key_callback()
 
 main()
-
-
+ShaderSetup()
+TriangleSetup()
 
 
 WriteToFile("Testmain.c")
