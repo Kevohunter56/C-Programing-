@@ -1,3 +1,4 @@
+from math import sqrt
 oB="{"
 cB="}"
 nL="\\n"
@@ -159,7 +160,8 @@ def WriteToFile(FileName = "Testmain.c"):
     with open(FileName, "w") as file:
         file.write(Code.code)
 
-def ShaderSetup(tabs1=0,tabs2=0,Use=True,vertexShaderSource="vertexShaderSource", fragmentShaderSource="fragmentShaderSource",vertexShader="vertexShader", 
+def ShaderSetup(tabs1=0,tabs2=0,Use=True,vertexShaderSource="vertexShaderSource", 
+                fragmentShaderSource="fragmentShaderSource",vertexShader="vertexShader", 
                 fragmentShader="fragmentShader", shaderProgram="shaderProgram",OurColor="Color"):
     Body.AddOutSideMainLoop(tabs1,f"""
                             
@@ -221,9 +223,35 @@ glDeleteShader({fragmentShader});
 glUseProgram({shaderProgram});                                
     """)
 
-def TriangleSetup(tabs1=0,tabs2=0,Use=True,color=[1.0,0.0,1.0,1.0],verticesName="vertices", points=[0.0, 0.0, 0.3, -0.4, 0.0, -0.4], VAOName="VAO", VBOName="VBO",
+def TriangleSetup(tabs1=0,tabs2=0,Use=True,color=[1.0,0.0,1.0,1.0],verticesName="vertices", 
+                  points=[0.0, 0.0, 0.3, -0.4, 0.0, -0.4], VAOName="VAO", VBOName="VBO",NewPoints="",
                   shaderProgram="shaderProgram",OurColor="Color"):
-    Body.AddOutSideMainLoop(tabs1,f"""                 
+    if NewPoints =="":
+        UpadatePoints = ""
+        DeclaireNewPoints= ""
+    else:
+        DeclaireNewPoints =f"""
+// Declaire points Array for update  in the main loop 
+float {NewPoints}[] =
+{oB}
+    {str(points[0])}f, {str(points[1])}f,
+    {str(points[2])}f, {str(points[3])}f,
+    {str(points[4])}f,  {str(points[5])}f
+{cB}; 
+"""
+        UpadatePoints = f"""
+
+//Update the vertices 
+glBindBuffer(GL_ARRAY_BUFFER, {VBOName});
+glBufferSubData(GL_ARRAY_BUFFER,
+                0,
+                sizeof({NewPoints}),
+                {NewPoints});
+"""
+    
+    Body.AddOutSideMainLoop(tabs1,f""" 
+
+{DeclaireNewPoints}           
 // Define the vertices for a triangle
 float {verticesName}[] =
 {oB}
@@ -262,10 +290,33 @@ glEnableVertexAttribArray(0);
 """)
     if Use:
         Body.AddInsideMainLoop(tabs2,f"""
-                               
+
+{UpadatePoints}
+
+//Update the color
 glUniform4f(glGetUniformLocation({shaderProgram}, "{OurColor}"), {color[0]}, {color[1]}, {color[2]}, {color[3]});
 glBindVertexArray({VAOName});
 glDrawArrays(GL_TRIANGLES, 0, 3);                         
 """)
-    
-   
+
+
+def Circle(tabs1=0,tabs2=0,Use=True,color=[1.0,0.0,0.1,1.0],verticesName="vertices",
+           info=[0.4, 0.0, 0.0, 20], VAOName="VAO", VBOName="VBO",NewPoints="",
+                  shaderProgram="shaderProgram",OurColor="Color"):
+    R = info[0]
+    DXP=DXN=CX=info[1]
+    CY=DYP=DYN=info[2]
+
+    DXPdy=CY+R
+
+    NT=info[3]
+    dx=dy=R/NT
+    for i in range(NT):
+        XF=DXP
+        YF=DXPdy
+
+        DXP += dx
+        DXPdy = CY + sqrt(R**2 - DXP**2)
+
+        
+        
